@@ -96,7 +96,7 @@ class HSGPParams(NamedTuple):
 
 
 def approx_hsgp_hyperparams(
-    x: np.ndarray, lengthscale_range: list[float], cov_func: str
+    x: list[float], lengthscale_range: list[float], cov_func: str
 ) -> HSGPParams:
     """Utility function that uses heuristics to recommend minimum `m` and `c` values,
     based on recommendations from Ruitort-Mayol et. al.
@@ -108,7 +108,7 @@ def approx_hsgp_hyperparams(
 
     Parameters
     ----------
-    x_range : List[float]
+    x : List[float]
         The range of the input variable on which the GP is going to be evaluated.
         Should be a list with two elements [x_min, x_max].
     lengthscale_range : List[float]
@@ -141,7 +141,7 @@ def approx_hsgp_hyperparams(
     if lengthscale_range[0] >= lengthscale_range[1]:
         raise ValueError("One of the boundaries out of order")
 
-    X_center = (np.max(x, axis=0) - np.min(x, axis=0)) / 2
+    X_center = (np.max(x, axis=0) + np.min(x, axis=0)) / 2
     Xs = x - X_center
     S = np.max(np.abs(Xs), axis=0)
 
